@@ -10,10 +10,83 @@ const inquirer = require("inquirer");
 //     console.log('Portfolio complete! Checkout index.html to see the output');
 // });
 
-inquirer.prompt([
-    {
-        type: "input",
-        name: "name",
-        message: "What is your name?"
+const promptUser = () => {
+    return inquirer.prompt([
+        //question 1
+        {
+            type: "input",
+            name: "name",
+            message: "What is your name?"
+        },
+        //question 2
+        {
+            type: "input",
+            name: "github",
+            message: "Enter your GitHub Username: "
+        },
+        //question 3
+        {
+            type: "input",
+            name: "about",
+            message: "Provide some info about yourself: "
+        }
+    ])
+}
+
+const promptProject = portfolioData => {
+    if(!portfolioData.projects){
+        portfolioData.projects = [];
     }
-]).then(answers => console.log(answers));
+
+    console.log(`
+    =================
+    Add a new Project
+    =================
+    `);
+    return inquirer.prompt([
+        {
+            type: 'input',
+            name: 'name',
+            message: 'What is the name of your project?'
+        },
+
+        {
+            type: 'input',
+            name: 'description',
+            message: 'Provide a description of the project (Required)'
+        },
+
+        {
+            type: 'checkbox',
+            name: 'languages',
+            message: 'What did you build this project with? (Check all that apply)',
+            choices: ['JavaScript', 'HTML', 'CSS', 'ES6', 'jQuery', 'Bootstrap', 'Node']
+        },
+
+        {
+            type: 'input',
+            name: 'link',
+            message: 'Enter the GitHub link to your project. (Required)'
+        },
+
+        {
+            type: 'confirm',
+            name: 'feature',
+            message: 'Would you like to feature this project?',
+            default: false
+        },
+
+        {
+            type: 'confirm',
+            name: 'confirmAddProject',
+            message: 'Would you like to enter another project?',
+            default: false
+        }
+    ])
+}
+
+promptUser()
+    .then(promptProject)
+    .then(portfolioData => {
+        console.log(portfolioData);
+    })
