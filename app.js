@@ -32,11 +32,25 @@ const promptUser = () => {
             name: "github",
             message: "Enter your GitHub Username: "
         },
-        //ask for user description
+        //ask the user if they'd like to provide a user description
+        {
+            type: "confirm",
+            name: "confirmAbout",
+            message: "Would you like to enter some information about yourself for an 'About' section?",
+            default: true
+        },
+        //user description
         {
             type: "input",
             name: "about",
-            message: "Provide some info about yourself: "
+            message: "Provide some info about yourself: ",
+            when: ({confirmAbout}) => {
+                if(confirmAbout){
+                    return true;
+                } else {
+                    return false;
+                }
+            }
         }
     ])
 }
@@ -115,7 +129,14 @@ const promptProject = portfolioData => {
             message: 'Would you like to enter another project?',
             default: false
         }
-    ])
+    ]).then(projectData => {
+        portfolioData.projects.push(projectData);
+        if(projectData.confirmAddProject){
+            return promptProject(portfolioData);
+        } else {
+            return portfolioData;
+        }
+    })
 }
 
 promptUser()
