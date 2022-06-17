@@ -182,7 +182,7 @@ promptUser()
 .then(portfolioData => {
     return generatePage(mockData);
 }).then(pageHTML => {
-    return fs.writeFile(pageHTML)
+    return writeFile(pageHTML)
 }).then(writeFileResponse => {
     console.log(writeFileResponse);
     return copyFile();
